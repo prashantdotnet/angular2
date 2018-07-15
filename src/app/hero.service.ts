@@ -85,6 +85,19 @@ export class HeroService {
     );
   }
 
+
+  editHero (hero: Hero | number): Observable<Hero> {
+    const id = typeof hero === 'number' ? hero : hero.id;
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.post<Hero>(this.heroesUrl,hero, httpOptions).pipe(
+      tap(_ => this.log(`edit hero id=${id}`)),
+      catchError(this.handleError<Hero>('editHero'))
+    );
+  }
+
+
+  
   /** PUT: update the hero on the server */
   updateHero (hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
